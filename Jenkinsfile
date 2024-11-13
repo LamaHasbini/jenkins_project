@@ -19,9 +19,8 @@ pipeline {
                 source ${VIRTUAL_ENV}/bin/activate
                 pip install -r requirements.txt
                 """
-                }
+            }
         }
-    }
         stage('Lint') {
             steps {
                 script {
