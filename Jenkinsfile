@@ -8,7 +8,7 @@ pipeline {
             steps {
                 script {
                     if (!fileExists("${env.WORKSPACE}/${VIRTUAL_ENV}")) {
-                        sh "python -m venv ${VIRTUAL_ENV}"
+                        sh "python3 -m venv ${VIRTUAL_ENV}"
                     }
                     sh "source ${VIRTUAL_ENV}/bin/activate && pip install -r requirements.txt"
                 }
