@@ -8,17 +8,20 @@ pipeline {
             steps {
                 script {
                     def pythonCmd = "python3"
-                    // Check if python3 is available, else fallback to python
                     if (sh(script: "which python3", returnStatus: true) != 0) {
                         pythonCmd = "python"
                     }
                     if (!fileExists("${env.WORKSPACE}/${VIRTUAL_ENV}")) {
-                        sh "python3 -m venv ${VIRTUAL_ENV}"
+                        sh "${pythonCmd} -m venv ${VIRTUAL_ENV}"
                     }
-                    sh "source ${VIRTUAL_ENV}/bin/activate && pip install -r requirements.txt"
                 }
-            }
+                sh """
+                source ${VIRTUAL_ENV}/bin/activate
+                pip install -r requirements.txt
+                """
+                }
         }
+    }
         stage('Lint') {
             steps {
                 script {
