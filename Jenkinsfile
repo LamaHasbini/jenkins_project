@@ -51,7 +51,7 @@ pipeline {
                         source \${VIRTUAL_ENV}/bin/activate
                         coverage run -m pytest
                         coverage report
-                        coverage html -d coverage_html_report  # Generates an HTML report
+                        coverage html -d coverage_html_report 
                     """
                 }
             }
