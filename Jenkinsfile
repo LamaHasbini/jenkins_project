@@ -16,7 +16,7 @@ pipeline {
                     }
                 }
                 sh """
-                source ${VIRTUAL_ENV}/bin/activate
+                source \${VIRTUAL_ENV}/bin/activate
                 pip install -r requirements.txt
                 """
             }
@@ -24,14 +24,14 @@ pipeline {
         stage('Lint') {
             steps {
                 script {
-                    sh "source ${VIRTUAL_ENV}/bin/activate && flake8 app.py"
+                    sh "source \${VIRTUAL_ENV}/bin/activate && flake8 app.py"
                 }
             }
         }
         stage('Test') {
             steps {
                 script {
-                    sh "source ${VIRTUAL_ENV}/bin/activate && export PYTHONPATH=$(pwd) && pytest"
+                    sh "source \${VIRTUAL_ENV}/bin/activate && export PYTHONPATH=$(pwd) && pytest"
                 }
             }
         }
