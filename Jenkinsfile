@@ -31,7 +31,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    sh "source \${VIRTUAL_ENV}/bin/activate && export PYTHONPATH=$(pwd) && pytest"
+                    sh "source \${VIRTUAL_ENV}/bin/activate && export PYTHONPATH=\\\$(pwd) && pytest"
                 }
             }
         }
