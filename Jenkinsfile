@@ -95,6 +95,7 @@ pipeline {
     
     post {
         always {
+            archiveArtifacts artifacts: 'htmlcov/**', allowEmptyArchive: true
             cleanWs()
         }
     }
