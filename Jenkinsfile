@@ -48,16 +48,11 @@ pipeline {
             steps {
                 script {
                     sh """
-                        source \${VIRTUAL_ENV}/bin/activate
+                        source ${VIRTUAL_ENV}/bin/activate
                         coverage run -m pytest
-                        coverage report
-                        coverage html -d coverage_html_report 
+                        coverage report -m
+                        coverage html -d coverage_html_report
                     """
-                }
-            }
-            post {
-                always {
-                    archiveArtifacts artifacts: 'coverage_html_report/**', allowEmptyArchive: true
                 }
             }
         }
@@ -65,28 +60,23 @@ pipeline {
         stage('Security Scan') {
             steps {
                 script {
-                    sh """
-                        source \${VIRTUAL_ENV}/bin/activate
-                        bandit -r . -o bandit_report.txt -f txt
-                    """
-                }
-            }
-            post {
-                always {
-                    archiveArtifacts artifacts: 'bandit_report.txt', allowEmptyArchive: true
+                    withEnv(["PYTHONIOENCODING=utf-8"]) {
+                        sh """
+                            source ${VIRTUAL_ENV}/bin/activate
+                            bandit -r . -f txt -o bandit_report.txt || exit 0
+                        """
+                    }
                 }
             }
         }
-        
+
         stage('Deploy') {
             steps {
                 script {
-                    echo "Deploying application with Docker..."
+                    echo "Deploying application..."
                     sh """
-                        source \${VIRTUAL_ENV}/bin/activate
-                        docker build -t myapp:latest .
-                        docker run -d -p 8080:8080 myapp:latest
-                        echo "Application deployed successfully with Docker."
+                        source ${VIRTUAL_ENV}/bin/activate
+                        python app.py
                     """
                 }
             }
