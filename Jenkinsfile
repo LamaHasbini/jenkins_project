@@ -70,6 +70,21 @@ pipeline {
                 archiveArtifacts artifacts: 'bandit_report.txt', allowEmptyArchive: true
             }
         }
+        stage('Publish Bandit Report') {
+            steps {
+                script {
+                    sh 'bandit -r . -f html -o bandit_report.html'
+                }
+                publishHTML(target: [
+                    allowMissing         : false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll              : true,
+                    reportDir            : '.',
+                    reportFiles          : 'bandit_report.html',
+                    reportName           : 'Bandit Security Report'
+                ])
+            }
+        }
 
         stage('Deploy') {
             steps {
