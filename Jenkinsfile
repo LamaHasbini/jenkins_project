@@ -73,19 +73,10 @@ pipeline {
         stage('Publish Bandit Report') {
             steps {
                 script {
-                    sh 'bandit -r . -f html -o bandit_report.html'
+                    sh 'cat bandit_report.txt'
                 }
-                publishHTML(target: [
-                    allowMissing         : false,
-                    alwaysLinkToLastBuild: true,
-                    keepAll              : true,
-                    reportDir            : '.',
-                    reportFiles          : 'bandit_report.html',
-                    reportName           : 'Bandit Security Report'
-                ])
             }
         }
-
         stage('Deploy') {
             steps {
                 script {
