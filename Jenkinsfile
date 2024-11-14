@@ -67,6 +67,7 @@ pipeline {
                         """
                     }
                 }
+                archiveArtifacts artifacts: 'bandit_report.txt', allowEmptyArchive: true
             }
         }
 
